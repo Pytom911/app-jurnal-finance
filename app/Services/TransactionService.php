@@ -114,7 +114,7 @@ class TransactionService
         return match ($jenis) {
             Transaksi::JENIS_PEMASUKAN => array_merge(
                 $dasar,
-                $this->atributPemasukan($user, $data)
+                $this->atributPemasukan($user, $data, $kecuali)
             ),
             Transaksi::JENIS_PENGELUARAN => array_merge(
                 $dasar,
@@ -134,7 +134,7 @@ class TransactionService
     /**
      * @return array<string, mixed>
      */
-    private function atributPemasukan(User $user, array $data): array
+    private function atributPemasukan(User $user, array $data, ?Transaksi $kecuali = null): array
     {
         $sumber = $data['sumber_pemasukan'] ?? null;
 
@@ -159,7 +159,11 @@ class TransactionService
         $tantanganId = null;
 
         if ($sumber === Transaksi::SUMBER_PENGHASILAN_SENDIRI && ! empty($data['tantangan_id'])) {
-            $tantanganId = $this->validasiTantanganAktif($user, $data['tantangan_id']);
+            $tantanganId = $this->validasiTantanganAktif(
+                $user,
+                $data['tantangan_id'],
+                $kecuali?->tantangan_id
+            );
         }
 
         return [
@@ -271,7 +275,7 @@ class TransactionService
         return (int) $kategori->getKey();
     }
 
-    private function validasiTantanganAktif(User $user, mixed $tantanganId): int
+    private function validasiTantanganAktif(User $user, mixed $tantanganId, ?int $tautanLama = null): int
     {
         $tantangan = $user->tantangan()->whereKey($tantanganId)->first();
 
@@ -281,7 +285,9 @@ class TransactionService
             ]);
         }
 
-        if ($tantangan->status !== Tantangan::STATUS_AKTIF) {
+        $sudahTertaut = $tautanLama !== null && (int) $tantangan->getKey() === (int) $tautanLama;
+
+        if ($tantangan->status !== Tantangan::STATUS_AKTIF && ! $sudahTertaut) {
             throw ValidationException::withMessages([
                 'tantangan_id' => 'Penghasilan hanya dapat dikaitkan dengan tantangan yang masih aktif.',
             ]);
