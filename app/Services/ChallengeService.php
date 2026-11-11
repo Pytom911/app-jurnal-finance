@@ -6,7 +6,7 @@ use App\Models\Tantangan;
 use App\Models\Transaksi;
 use App\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
@@ -211,7 +211,7 @@ class ChallengeService
     /**
      * Query riwayat tantangan yang sudah selesai atau perlu penyesuaian.
      */
-    public function riwayat(User $user): Builder
+    public function riwayat(User $user): HasMany
     {
         return $user->tantangan()
             ->whereIn('status', [
