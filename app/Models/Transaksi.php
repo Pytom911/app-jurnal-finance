@@ -23,6 +23,18 @@ class Transaksi extends Model
 {
     use HasFactory, SoftDeletes;
 
+    public const JENIS_PEMASUKAN = 'pemasukan';
+
+    public const JENIS_PENGELUARAN = 'pengeluaran';
+
+    public const JENIS_TRANSFER = 'transfer';
+
+    public const JENIS_SALDO_AWAL = 'saldo_awal';
+
+    public const SUMBER_UANG_SAKU = 'uang_saku';
+
+    public const SUMBER_PENGHASILAN_SENDIRI = 'penghasilan_sendiri';
+
     /**
      * Nama tabel tidak mengikuti bentuk jamak bahasa Inggris.
      *

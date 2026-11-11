@@ -13,6 +13,10 @@ class KategoriTransaksi extends Model
 {
     use HasFactory;
 
+    public const JENIS_PEMASUKAN = 'pemasukan';
+
+    public const JENIS_PENGELUARAN = 'pengeluaran';
+
     /**
      * Nama tabel tidak mengikuti bentuk jamak bahasa Inggris.
      *

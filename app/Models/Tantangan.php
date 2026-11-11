@@ -20,6 +20,12 @@ class Tantangan extends Model
 {
     use HasFactory;
 
+    public const STATUS_AKTIF = 'aktif';
+
+    public const STATUS_SELESAI = 'selesai';
+
+    public const STATUS_PERLU_PENYESUAIAN = 'perlu_penyesuaian';
+
     /**
      * Nama tabel tidak mengikuti bentuk jamak bahasa Inggris.
      *

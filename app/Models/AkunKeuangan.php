@@ -13,6 +13,10 @@ class AkunKeuangan extends Model
 {
     use HasFactory;
 
+    public const JENIS_CAIR = 'cair';
+
+    public const JENIS_TABUNGAN = 'tabungan';
+
     /**
      * Nama tabel tidak mengikuti bentuk jamak bahasa Inggris.
      *
